@@ -55,8 +55,8 @@ function CountdownWidget() {
     if (time.isExpired) {
       return (
         <div className="text-center">
-          <div className="text-6xl font-bold" style={{ color: textColor }}>0</div>
-          <div className="text-xl mt-2" style={{ color: secondaryColor }}>已结束</div>
+          <div className="text-4xl sm:text-6xl font-bold" style={{ color: textColor }}>0</div>
+          <div className="text-base sm:text-xl mt-2" style={{ color: secondaryColor }}>已结束</div>
         </div>
       );
     }
@@ -64,8 +64,8 @@ function CountdownWidget() {
     if (config.unit === 'days') {
       return (
         <div className="text-center">
-          <div className="text-7xl font-bold" style={{ color: textColor }}>{time.days}</div>
-          <div className="text-2xl mt-2" style={{ color: secondaryColor }}>天</div>
+          <div className="text-5xl sm:text-7xl font-bold" style={{ color: textColor }}>{time.days}</div>
+          <div className="text-lg sm:text-2xl mt-2" style={{ color: secondaryColor }}>天</div>
         </div>
       );
     }
@@ -78,15 +78,15 @@ function CountdownWidget() {
     ].filter(item => item.show);
 
     return (
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
         {items.map((item, index) => (
           <div key={item.label} className="flex items-baseline gap-1">
-            <div className="text-5xl font-bold" style={{ color: textColor }}>
+            <div className="text-3xl sm:text-5xl font-bold" style={{ color: textColor }}>
               {String(item.value).padStart(2, '0')}
             </div>
-            <div className="text-xl" style={{ color: secondaryColor }}>{item.label}</div>
+            <div className="text-sm sm:text-xl" style={{ color: secondaryColor }}>{item.label}</div>
             {index < items.length - 1 && (
-              <div className="text-3xl mx-1" style={{ color: secondaryColor }}>:</div>
+              <div className="text-2xl sm:text-3xl mx-1" style={{ color: secondaryColor }}>:</div>
             )}
           </div>
         ))}
@@ -98,27 +98,27 @@ function CountdownWidget() {
     switch (config.style) {
       case 'card':
         return isDark
-          ? 'p-8 rounded-2xl shadow-2xl bg-[#2c2c2c]'
-          : 'p-8 rounded-2xl shadow-2xl bg-gray-50';
+          ? 'p-4 sm:p-8 rounded-2xl shadow-2xl bg-[#2c2c2c]'
+          : 'p-4 sm:p-8 rounded-2xl shadow-2xl bg-gray-50';
       case 'gradient':
         return isDark
-          ? 'p-8 rounded-2xl bg-gradient-to-br from-purple-900/50 to-blue-900/50 backdrop-blur-sm'
-          : 'p-8 rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100';
+          ? 'p-4 sm:p-8 rounded-2xl bg-gradient-to-br from-purple-900/50 to-blue-900/50 backdrop-blur-sm'
+          : 'p-4 sm:p-8 rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100';
       case 'minimal':
       default:
-        return 'p-6';
+        return 'p-3 sm:p-6';
     }
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen w-full flex items-center justify-center p-2 sm:p-4 overflow-hidden"
       style={{ backgroundColor: bgColor }}
     >
       <div className={getStyleClasses()}>
         {config.title && (
           <h2
-            className="text-2xl font-semibold mb-6 text-center"
+            className="text-base sm:text-2xl font-semibold mb-3 sm:mb-6 text-center"
             style={{ color: textColor }}
           >
             {config.title}
@@ -128,6 +128,7 @@ function CountdownWidget() {
       </div>
     </div>
   );
+}
 }
 
 export default function WidgetPage() {
