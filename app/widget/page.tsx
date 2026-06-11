@@ -1,13 +1,13 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { parseWidgetUrl } from '@/lib/url-builder';
 import { calculateTimeRemaining } from '@/lib/countdown';
 import { resolveTheme } from '@/lib/theme';
 import type { CountdownConfig, TimeRemaining } from '@/types';
 
-export default function WidgetPage() {
+function CountdownWidget() {
   const searchParams = useSearchParams();
   const [config, setConfig] = useState<CountdownConfig | null>(null);
   const [time, setTime] = useState<TimeRemaining | null>(null);
@@ -51,7 +51,6 @@ export default function WidgetPage() {
   const textColor = isDark ? '#FFFFFF' : '#191919';
   const secondaryColor = isDark ? '#666666' : '#666666';
 
-  // 根据精度显示不同格式
   const renderCountdown = () => {
     if (time.isExpired) {
       return (
@@ -62,7 +61,6 @@ export default function WidgetPage() {
       );
     }
 
-    // 天：只显示天数
     if (config.unit === 'days') {
       return (
         <div className="text-center">
@@ -72,7 +70,6 @@ export default function WidgetPage() {
       );
     }
 
-    // 其他精度：显示完整的 天-时-分-秒
     const items = [
       { value: time.days, label: '天', show: time.days > 0 || config.unit === 'hours' },
       { value: time.hours, label: '时', show: true },
@@ -130,5 +127,13 @@ export default function WidgetPage() {
         {renderCountdown()}
       </div>
     </div>
+  );
+}
+
+export default function WidgetPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">加载中...</div>}>
+      <CountdownWidget />
+    </Suspense>
   );
 }
