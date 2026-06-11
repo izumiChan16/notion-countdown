@@ -1,12 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  assetPrefix: process.env.NODE_ENV === 'production' ? undefined : undefined,
-  experimental: {
-    turbo: {
-      resolveAlias: {},
-    },
-  },
+  allowedDevOrigins: ['192.168.139.15'],
 };
 
 export default nextConfig;
