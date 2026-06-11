@@ -129,7 +129,6 @@ function CountdownWidget() {
     </div>
   );
 }
-}
 
 export default function WidgetPage() {
   return (
