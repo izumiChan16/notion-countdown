@@ -46,54 +46,88 @@ export default function WidgetPage() {
 
   if (!config || !time) return null;
 
-  const getDisplayValue = () => {
-    switch (config.unit) {
-      case 'seconds': return time.days * 86400 + time.hours * 3600 + time.minutes * 60 + time.seconds;
-      case 'minutes': return time.days * 1440 + time.hours * 60 + time.minutes;
-      case 'hours': return time.days * 24 + time.hours;
-      case 'days': return time.days;
-    }
-  };
-
-  const getUnitLabel = () => {
-    switch (config.unit) {
-      case 'seconds': return '秒';
-      case 'minutes': return '分钟';
-      case 'hours': return '小时';
-      case 'days': return '天';
-    }
-  };
-
   const isDark = actualTheme === 'dark';
+  const bgColor = isDark ? '#191919' : '#FFFFFF';
+  const textColor = isDark ? '#FFFFFF' : '#191919';
+  const secondaryColor = isDark ? '#666666' : '#666666';
 
-  const baseClasses = `min-h-screen flex items-center justify-center p-4 ${
-    isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
-  }`;
+  // 根据精度显示不同格式
+  const renderCountdown = () => {
+    if (time.isExpired) {
+      return (
+        <div className="text-center">
+          <div className="text-6xl font-bold" style={{ color: textColor }}>0</div>
+          <div className="text-xl mt-2" style={{ color: secondaryColor }}>已结束</div>
+        </div>
+      );
+    }
+
+    // 天：只显示天数
+    if (config.unit === 'days') {
+      return (
+        <div className="text-center">
+          <div className="text-7xl font-bold" style={{ color: textColor }}>{time.days}</div>
+          <div className="text-2xl mt-2" style={{ color: secondaryColor }}>天</div>
+        </div>
+      );
+    }
+
+    // 其他精度：显示完整的 天-时-分-秒
+    const items = [
+      { value: time.days, label: '天', show: time.days > 0 || config.unit === 'hours' },
+      { value: time.hours, label: '时', show: true },
+      { value: time.minutes, label: '分', show: config.unit !== 'hours' },
+      { value: time.seconds, label: '秒', show: config.unit === 'seconds' },
+    ].filter(item => item.show);
+
+    return (
+      <div className="flex items-center justify-center gap-4">
+        {items.map((item, index) => (
+          <div key={item.label} className="flex items-baseline gap-1">
+            <div className="text-5xl font-bold" style={{ color: textColor }}>
+              {String(item.value).padStart(2, '0')}
+            </div>
+            <div className="text-xl" style={{ color: secondaryColor }}>{item.label}</div>
+            {index < items.length - 1 && (
+              <div className="text-3xl mx-1" style={{ color: secondaryColor }}>:</div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   const getStyleClasses = () => {
     switch (config.style) {
       case 'card':
-        return `p-8 rounded-lg shadow-lg ${isDark ? 'bg-gray-800' : 'bg-gray-50'}`;
+        return isDark
+          ? 'p-8 rounded-2xl shadow-2xl bg-[#2c2c2c]'
+          : 'p-8 rounded-2xl shadow-2xl bg-gray-50';
       case 'gradient':
-        return `p-8 rounded-lg ${isDark ? 'bg-gradient-to-br from-purple-900 to-blue-900' : 'bg-gradient-to-br from-blue-400 to-purple-500 text-white'}`;
+        return isDark
+          ? 'p-8 rounded-2xl bg-gradient-to-br from-purple-900/50 to-blue-900/50 backdrop-blur-sm'
+          : 'p-8 rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100';
       case 'minimal':
       default:
-        return '';
+        return 'p-6';
     }
   };
 
   return (
-    <div className={baseClasses}>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ backgroundColor: bgColor }}
+    >
       <div className={getStyleClasses()}>
         {config.title && (
-          <h2 className="text-xl font-semibold mb-4 text-center">{config.title}</h2>
+          <h2
+            className="text-2xl font-semibold mb-6 text-center"
+            style={{ color: textColor }}
+          >
+            {config.title}
+          </h2>
         )}
-        <div className="text-center">
-          <div className="text-6xl font-bold mb-2">
-            {time.isExpired ? '0' : getDisplayValue()}
-          </div>
-          <div className="text-2xl opacity-80">{getUnitLabel()}</div>
-        </div>
+        {renderCountdown()}
       </div>
     </div>
   );
