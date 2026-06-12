@@ -68,164 +68,191 @@ function ConfigPage() {
     });
   };
 
+  const labelClass = 'mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.08em] text-[#787774]';
+  const fieldClass = 'h-11 w-full rounded-md border border-[#dedbd5] bg-white px-3 text-[15px] text-[#37352f] outline-none transition-colors placeholder:text-[#9b9a97] hover:border-[#c9c5bc] focus:border-[#37352f] focus:ring-2 focus:ring-[#37352f]/10';
+  const selectClass = 'h-11 w-full cursor-pointer rounded-md border border-[#dedbd5] bg-white px-3 text-[15px] text-[#37352f] outline-none transition-colors hover:border-[#c9c5bc] focus:border-[#37352f] focus:ring-2 focus:ring-[#37352f]/10';
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="max-w-3xl w-full bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-6 sm:p-10">
-        <div className="flex justify-between items-start mb-10">
-          <div className="text-center flex-1">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+    <main className="min-h-screen bg-[#fbfbfa] px-4 py-5 text-[#37352f] sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6">
+        <header className="border-b border-[#ece9e4] pb-5">
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <p className="text-sm text-[#787774]">Notion Countdown / New widget</p>
+            <LanguageSwitcher />
+          </div>
+          <div className="max-w-3xl">
+            <h1 className="text-3xl font-bold tracking-normal text-[#37352f] sm:text-4xl">
               {t('title')}
             </h1>
-            <p className="text-gray-600 text-lg">{t('subtitle')}</p>
+            <p className="mt-2 text-base leading-7 text-[#787774]">{t('subtitle')}</p>
           </div>
-          <LanguageSwitcher />
-        </div>
+        </header>
 
-        <div className="space-y-8">
-          {/* Date and Time */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-100">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <DateInput value={date} onChange={setDate} />
-              <TimeInput value={time} onChange={setTime} />
-            </div>
-            {isValid && (
-              <div className="mt-4 p-3 bg-white rounded-xl border border-blue-200">
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold text-blue-600">{t('targetTime')}：</span>
-                  {new Date(`${date}T${time}`).toLocaleString(language === 'zh' ? 'zh-CN' : 'en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Other Config */}
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                <PencilIcon className="w-5 h-5" />
-                <span>{t('titleLabel')}</span>
-              </label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder={t('titlePlaceholder')}
-                className="w-full px-4 py-3 text-gray-900 bg-gray-50 border-2 border-gray-200 rounded-xl placeholder:text-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all"
-              />
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+          <section className="rounded-md border border-[#dedbd5] bg-white">
+            <div className="border-b border-[#ece9e4] px-5 py-4">
+              <h2 className="text-base font-semibold text-[#37352f]">{t('generateButton')}</h2>
+              <p className="mt-1 text-sm text-[#787774]">{t('selectDateTime')}</p>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                <PencilIcon className="w-5 h-5" />
-                <span>{t('endMessage')}</span>
-              </label>
-              <input
-                type="text"
-                value={endMessage}
-                onChange={(e) => setEndMessage(e.target.value)}
-                placeholder={t('endMessagePlaceholder')}
-                className="w-full px-4 py-3 text-gray-900 bg-gray-50 border-2 border-gray-200 rounded-xl placeholder:text-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all"
-              />
+            <div className="space-y-6 p-5">
+              <div className="rounded-md border border-[#ece9e4] bg-[#fbfbfa] p-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <DateInput value={date} onChange={setDate} />
+                  <TimeInput value={time} onChange={setTime} />
+                </div>
+                {isValid && (
+                  <div className="mt-4 rounded-md border border-[#dedbd5] bg-white px-3 py-2">
+                    <p className="text-sm text-[#787774]">
+                      <span className="font-medium text-[#37352f]">{t('targetTime')}:</span>{' '}
+                      {new Date(`${date}T${time}`).toLocaleString(language === 'zh' ? 'zh-CN' : 'en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className={labelClass}>
+                    <PencilIcon className="h-4 w-4" />
+                    <span>{t('titleLabel')}</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder={t('titlePlaceholder')}
+                    className={fieldClass}
+                  />
+                </div>
+
+                <div>
+                  <label className={labelClass}>
+                    <PencilIcon className="h-4 w-4" />
+                    <span>{t('endMessage')}</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={endMessage}
+                    onChange={(e) => setEndMessage(e.target.value)}
+                    placeholder={t('endMessagePlaceholder')}
+                    className={fieldClass}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  <div>
+                    <label className={labelClass}>
+                      <ClockIcon className="h-4 w-4" />
+                      <span>{t('unit')}</span>
+                    </label>
+                    <select
+                      value={unit}
+                      onChange={(e) => setUnit(e.target.value as CountdownUnit)}
+                      className={selectClass}
+                    >
+                      <option value="days">{t('unitDays')}</option>
+                      <option value="hours">{t('unitHours')}</option>
+                      <option value="minutes">{t('unitMinutes')}</option>
+                      <option value="seconds">{t('unitSeconds')}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={labelClass}>
+                      <SwatchIcon className="h-4 w-4" />
+                      <span>{t('theme')}</span>
+                    </label>
+                    <select
+                      value={theme}
+                      onChange={(e) => setTheme(e.target.value as Theme)}
+                      className={selectClass}
+                    >
+                      <option value="auto">{t('themeAuto')}</option>
+                      <option value="light">{t('themeLight')}</option>
+                      <option value="dark">{t('themeDark')}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={labelClass}>
+                      <SparklesIcon className="h-4 w-4" />
+                      <span>{t('style')}</span>
+                    </label>
+                    <select
+                      value={style}
+                      onChange={(e) => setStyle(e.target.value as Style)}
+                      className={selectClass}
+                    >
+                      <option value="minimal">{t('styleMinimal')}</option>
+                      <option value="card">{t('styleCard')}</option>
+                      <option value="gradient">{t('styleGradient')}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleGenerate}
+                disabled={!isValid}
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#37352f] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#2f2d29] active:bg-[#262421] disabled:cursor-not-allowed disabled:bg-[#d8d5ce] disabled:text-[#9b9a97]"
+              >
+                <RocketLaunchIcon className="h-5 w-5" />
+                <span>{isValid ? t('generateButton') : t('selectDateTime')}</span>
+              </button>
             </div>
+          </section>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                  <ClockIcon className="w-5 h-5" />
-                  <span>{t('unit')}</span>
-                </label>
-                <select
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value as CountdownUnit)}
-                  className="w-full px-4 py-3 text-gray-900 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 transition-all cursor-pointer"
-                >
-                  <option value="days">{t('unitDays')}</option>
-                  <option value="hours">{t('unitHours')}</option>
-                  <option value="minutes">{t('unitMinutes')}</option>
-                  <option value="seconds">{t('unitSeconds')}</option>
-                </select>
+          <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
+            <WidgetPreview config={previewConfig} />
+
+            <section className="rounded-md border border-[#dedbd5] bg-white">
+              <div className="flex items-center gap-2 border-b border-[#ece9e4] px-4 py-3 text-sm font-medium text-[#37352f]">
+                <CheckCircleIcon className={`h-4 w-4 ${generatedUrl ? 'text-[#2f7d32]' : 'text-[#9b9a97]'}`} />
+                <span>{generatedUrl ? t('urlGenerated') : t('generateButton')}</span>
               </div>
 
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                  <SwatchIcon className="w-5 h-5" />
-                  <span>{t('theme')}</span>
-                </label>
-                <select
-                  value={theme}
-                  onChange={(e) => setTheme(e.target.value as Theme)}
-                  className="w-full px-4 py-3 text-gray-900 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 transition-all cursor-pointer"
-                >
-                  <option value="auto">{t('themeAuto')}</option>
-                  <option value="light">{t('themeLight')}</option>
-                  <option value="dark">{t('themeDark')}</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                  <SparklesIcon className="w-5 h-5" />
-                  <span>{t('style')}</span>
-                </label>
-                <select
-                  value={style}
-                  onChange={(e) => setStyle(e.target.value as Style)}
-                  className="w-full px-4 py-3 text-gray-900 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-purple-500 transition-all cursor-pointer"
-                >
-                  <option value="minimal">{t('styleMinimal')}</option>
-                  <option value="card">{t('styleCard')}</option>
-                  <option value="gradient">{t('styleGradient')}</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={handleGenerate}
-            disabled={!isValid}
-            className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold text-lg py-5 px-6 rounded-2xl hover:shadow-2xl disabled:from-gray-300 disabled:via-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:transform-none flex items-center justify-center gap-2"
-          >
-            <RocketLaunchIcon className="w-6 h-6" />
-            <span>{isValid ? t('generateButton') : t('selectDateTime')}</span>
-          </button>
-
-          {generatedUrl && (
-            <div className="mt-6 p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <p className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <CheckCircleIcon className="w-6 h-6 text-green-600" />
-                <span>{t('urlGenerated')}</span>
-              </p>
-              <div className="flex gap-3 mb-4">
-                <input
-                  type="text"
-                  value={generatedUrl}
-                  readOnly
-                  className="flex-1 px-4 py-3 bg-white border-2 border-green-300 rounded-xl text-sm text-gray-700 focus:outline-none font-mono"
-                />
-                <button
-                  onClick={handleCopy}
-                  className={`px-6 py-3 font-bold rounded-xl transition-all shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 flex items-center gap-2 ${
-                    copied ? 'bg-green-500 text-white' : 'bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-900 hover:to-black'
-                  }`}
-                >
-                  {copied ? <CheckCircleIcon className="w-5 h-5" /> : <ClipboardDocumentIcon className="w-5 h-5" />}
-                  <span>{copied ? t('copied') : t('copyButton')}</span>
-                </button>
-              </div>
-              <QRCodeDisplay url={generatedUrl} />
-            </div>
-          )}
-
-          <WidgetPreview config={previewConfig} />
+              {generatedUrl ? (
+                <div className="space-y-4 p-4">
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <input
+                      type="text"
+                      value={generatedUrl}
+                      readOnly
+                      className="min-w-0 flex-1 rounded-md border border-[#dedbd5] bg-[#fbfbfa] px-3 py-2 font-mono text-xs text-[#37352f] outline-none"
+                    />
+                    <button
+                      onClick={handleCopy}
+                      className={`inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                        copied
+                          ? 'bg-[#2f7d32] text-white'
+                          : 'bg-[#37352f] text-white hover:bg-[#2f2d29] active:bg-[#262421]'
+                      }`}
+                    >
+                      {copied ? <CheckCircleIcon className="h-4 w-4" /> : <ClipboardDocumentIcon className="h-4 w-4" />}
+                      <span>{copied ? t('copied') : t('copyButton')}</span>
+                    </button>
+                  </div>
+                  <QRCodeDisplay url={generatedUrl} />
+                </div>
+              ) : (
+                <div className="p-4">
+                  <div className="rounded-md border border-dashed border-[#dedbd5] bg-[#fbfbfa] px-4 py-8 text-center text-sm text-[#9b9a97]">
+                    {t('selectDateTime')}
+                  </div>
+                </div>
+              )}
+            </section>
+          </aside>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
