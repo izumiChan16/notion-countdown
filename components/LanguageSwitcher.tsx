@@ -17,20 +17,20 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-2 bg-white rounded-lg border-2 border-gray-200 p-1">
-      <LanguageIcon className="w-5 h-5 text-gray-600 ml-2" />
+    <div className="flex items-center gap-1 rounded-md border border-[#dedbd5] bg-white p-1 text-sm shadow-[0_1px_2px_rgba(15,15,15,0.04)]">
+      <LanguageIcon className="ml-1 h-4 w-4 text-[#787774]" />
       <button
         onClick={() => handleChange('zh')}
-        className={`px-3 py-1 rounded font-medium transition-colors ${
-          language === 'zh' ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'
+        className={`rounded px-2.5 py-1 font-medium transition-colors ${
+          language === 'zh' ? 'bg-[#37352f] text-white' : 'text-[#787774] hover:bg-[#f7f6f3] hover:text-[#37352f]'
         }`}
       >
         中文
       </button>
       <button
         onClick={() => handleChange('en')}
-        className={`px-3 py-1 rounded font-medium transition-colors ${
-          language === 'en' ? 'bg-blue-500 text-white' : 'text-gray-700 hover:bg-gray-100'
+        className={`rounded px-2.5 py-1 font-medium transition-colors ${
+          language === 'en' ? 'bg-[#37352f] text-white' : 'text-[#787774] hover:bg-[#f7f6f3] hover:text-[#37352f]'
         }`}
       >
         EN

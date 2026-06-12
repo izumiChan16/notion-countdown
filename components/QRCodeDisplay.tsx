@@ -11,8 +11,8 @@ export default function QRCodeDisplay({ url }: QRCodeDisplayProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="mt-4 p-4 bg-white border-2 border-gray-200 rounded-xl">
-      <p className="text-sm font-semibold text-gray-700 mb-3 text-center">
+    <div className="rounded-md border border-[#dedbd5] bg-white p-4">
+      <p className="mb-3 text-center text-sm font-medium text-[#787774]">
         {t('qrcodeTitle')}
       </p>
       <div className="flex justify-center">

@@ -28,8 +28,8 @@ export default function DateInput({ value, onChange }: DateInputProps) {
 
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-        <CalendarIcon className="w-5 h-5" />
+      <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.08em] text-[#787774]">
+        <CalendarIcon className="h-4 w-4" />
         <span>{t('endDate')}</span>
       </label>
       <div className="relative">
@@ -38,11 +38,11 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           onChange={handleChange}
           dateFormat="yyyy-MM-dd"
           placeholderText="YYYY-MM-DD"
-          className="w-full px-4 py-3 text-gray-900 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-lg"
-          calendarClassName="shadow-2xl rounded-xl"
+          className="h-11 w-full rounded-md border border-[#dedbd5] bg-white px-3 pr-10 text-[15px] text-[#37352f] outline-none transition-colors placeholder:text-[#9b9a97] hover:border-[#c9c5bc] focus:border-[#37352f] focus:ring-2 focus:ring-[#37352f]/10"
+          calendarClassName="notion-datepicker"
           showPopperArrow={false}
         />
-        <CalendarIcon className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+        <CalendarIcon className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9b9a97]" />
       </div>
     </div>
   );

@@ -49,8 +49,8 @@ export default function TimeInput({ value, onChange }: TimeInputProps) {
 
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-        <ClockIcon className="w-5 h-5" />
+      <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.08em] text-[#787774]">
+        <ClockIcon className="h-4 w-4" />
         <span>{t('endTime')}</span>
       </label>
 
@@ -62,11 +62,11 @@ export default function TimeInput({ value, onChange }: TimeInputProps) {
             const val = Math.max(is24Hour ? 0 : 1, Math.min(is24Hour ? 23 : 12, parseInt(e.target.value) || 0));
             handleHourChange(val);
           }}
-          className="w-20 px-3 py-3 text-center text-xl font-semibold text-gray-900 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all"
+          className="h-11 w-20 rounded-md border border-[#dedbd5] bg-white px-3 text-center text-lg font-semibold text-[#37352f] outline-none transition-colors hover:border-[#c9c5bc] focus:border-[#37352f] focus:ring-2 focus:ring-[#37352f]/10"
           min={is24Hour ? 0 : 1}
           max={is24Hour ? 23 : 12}
         />
-        <span className="text-2xl font-bold text-gray-600">:</span>
+        <span className="text-xl font-semibold text-[#787774]">:</span>
         <input
           type="number"
           value={String(minutes).padStart(2, '0')}
@@ -74,18 +74,18 @@ export default function TimeInput({ value, onChange }: TimeInputProps) {
             const val = Math.max(0, Math.min(59, parseInt(e.target.value) || 0));
             handleMinuteChange(val);
           }}
-          className="w-20 px-3 py-3 text-center text-xl font-semibold text-gray-900 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all"
+          className="h-11 w-20 rounded-md border border-[#dedbd5] bg-white px-3 text-center text-lg font-semibold text-[#37352f] outline-none transition-colors hover:border-[#c9c5bc] focus:border-[#37352f] focus:ring-2 focus:ring-[#37352f]/10"
           min={0}
           max={59}
         />
 
         {!is24Hour && (
-          <div className="flex border-2 border-gray-200 rounded-xl overflow-hidden">
+          <div className="flex overflow-hidden rounded-md border border-[#dedbd5] bg-white">
             <button
               type="button"
               onClick={() => handlePeriodChange(false)}
               className={`px-4 py-3 font-semibold transition-colors ${
-                !isPM ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
+                !isPM ? 'bg-[#37352f] text-white' : 'bg-white text-[#37352f] hover:bg-[#f7f6f3]'
               }`}
             >
               {t('am')}
@@ -94,7 +94,7 @@ export default function TimeInput({ value, onChange }: TimeInputProps) {
               type="button"
               onClick={() => handlePeriodChange(true)}
               className={`px-4 py-3 font-semibold transition-colors ${
-                isPM ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-50'
+                isPM ? 'bg-[#37352f] text-white' : 'bg-white text-[#37352f] hover:bg-[#f7f6f3]'
               }`}
             >
               {t('pm')}
@@ -103,24 +103,24 @@ export default function TimeInput({ value, onChange }: TimeInputProps) {
         )}
       </div>
 
-      <div className="flex items-center gap-4 mt-3">
+      <div className="mt-3 flex items-center gap-4">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
             checked={!is24Hour}
             onChange={() => handleFormatChange(false)}
-            className="w-4 h-4 text-blue-600"
+            className="h-4 w-4 accent-[#37352f]"
           />
-          <span className="text-sm text-gray-700">{t('hour12')}</span>
+          <span className="text-sm text-[#787774]">{t('hour12')}</span>
         </label>
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"
             checked={is24Hour}
             onChange={() => handleFormatChange(true)}
-            className="w-4 h-4 text-blue-600"
+            className="h-4 w-4 accent-[#37352f]"
           />
-          <span className="text-sm text-gray-700">{t('hour24')}</span>
+          <span className="text-sm text-[#787774]">{t('hour24')}</span>
         </label>
       </div>
     </div>
