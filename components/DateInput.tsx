@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from '@/lib/i18n/hooks';
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface DateInputProps {
   value: string; // YYYY-MM-DD format
@@ -11,63 +13,19 @@ interface DateInputProps {
 
 export default function DateInput({ value, onChange }: DateInputProps) {
   const { t } = useTranslation();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const datepickerRef = useRef<any>(null);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const selectedDate = value ? new Date(value + 'T00:00:00') : null;
 
-  useEffect(() => {
-    if (!mounted || !inputRef.current) return;
-
-    const initDatepicker = async () => {
-      try {
-        const { Datepicker } = await import('flowbite-datepicker');
-        console.log('✅ Flowbite Datepicker imported', Datepicker);
-
-        if (datepickerRef.current) {
-          datepickerRef.current.destroy();
-        }
-
-        datepickerRef.current = new Datepicker(inputRef.current!, {
-          autohide: true,
-          format: 'yyyy-mm-dd',
-          todayBtn: true,
-          clearBtn: true,
-          buttonClass: 'btn',
-        });
-
-        console.log('✅ Datepicker initialized', datepickerRef.current);
-
-        // Listen for date selection
-        inputRef.current!.addEventListener('changeDate', function(e: any) {
-          console.log('📅 Date selected:', e.detail.date, e.target.value);
-          if (e.target.value) {
-            onChange(e.target.value);
-          }
-        });
-
-      } catch (error) {
-        console.error('❌ Failed to initialize Flowbite Datepicker:', error);
-      }
-    };
-
-    initDatepicker();
-
-    return () => {
-      if (datepickerRef.current) {
-        try {
-          datepickerRef.current.destroy();
-        } catch (e) {
-          console.warn('Error destroying datepicker:', e);
-        }
-      }
-    };
-  }, [mounted, onChange]);
-
-  if (!mounted) return null;
+  const handleChange = (date: Date | null) => {
+    if (date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      onChange(`${year}-${month}-${day}`);
+    } else {
+      onChange('');
+    }
+  };
 
   return (
     <div>
@@ -76,23 +34,17 @@ export default function DateInput({ value, onChange }: DateInputProps) {
         <span>{t('endDate')}</span>
       </label>
       <div className="relative">
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="YYYY-MM-DD"
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleChange}
+          dateFormat="yyyy-MM-dd"
+          placeholderText="YYYY-MM-DD"
           className="w-full px-4 py-3 text-gray-900 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-lg"
+          calendarClassName="shadow-2xl rounded-xl"
+          showPopperArrow={false}
         />
-        <CalendarIcon
-          className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-        />
+        <CalendarIcon className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
       </div>
     </div>
   );
-}
-
-function useState<T>(initialValue: T): [T, (value: T) => void] {
-  const { useState: reactUseState } = require('react');
-  return reactUseState(initialValue);
 }
