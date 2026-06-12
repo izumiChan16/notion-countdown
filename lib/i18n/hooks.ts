@@ -1,31 +1,25 @@
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Locale } from './locales';
-import { defaultLocale } from './locales';
 import type { TranslationKey } from './translations';
 import { getTranslation } from './translations';
 import { detectBrowserLanguage, getStoredLanguage, setStoredLanguage } from './utils';
 
 export function useLanguage(): [Locale, (locale: Locale) => void] {
   const searchParams = useSearchParams();
-  const [language, setLanguage] = useState<Locale>(defaultLocale);
-
-  useEffect(() => {
+  const [language, setLanguage] = useState<Locale>(() => {
     const urlLang = searchParams.get('lang');
     if (urlLang === 'zh' || urlLang === 'en') {
-      setLanguage(urlLang);
-      return;
+      return urlLang;
     }
 
     const storedLang = getStoredLanguage();
     if (storedLang) {
-      setLanguage(storedLang);
-      return;
+      return storedLang;
     }
 
-    const browserLang = detectBrowserLanguage();
-    setLanguage(browserLang);
-  }, [searchParams]);
+    return detectBrowserLanguage();
+  });
 
   const changeLanguage = (locale: Locale) => {
     setLanguage(locale);

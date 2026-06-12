@@ -1,28 +1,26 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useMemo, useState, Suspense } from 'react';
 import { parseWidgetUrl } from '@/lib/url-builder';
 import { calculateTimeRemaining } from '@/lib/countdown';
 import { resolveTheme } from '@/lib/theme';
 import { getTranslation } from '@/lib/i18n/translations';
+import type { TranslationKey } from '@/lib/i18n/translations';
 import type { CountdownConfig, TimeRemaining } from '@/types';
 
 function CountdownWidget() {
   const searchParams = useSearchParams();
-  const [config, setConfig] = useState<CountdownConfig | null>(null);
-  const [time, setTime] = useState<TimeRemaining | null>(null);
-  const [actualTheme, setActualTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
+  const config = useMemo<CountdownConfig | null>(() => {
     try {
-      const parsed = parseWidgetUrl(searchParams);
-      setConfig(parsed);
-      setActualTheme(resolveTheme(parsed.theme));
+      return parseWidgetUrl(searchParams);
     } catch (error) {
       console.error('Invalid widget URL', error);
+      return null;
     }
   }, [searchParams]);
+  const [time, setTime] = useState<TimeRemaining | null>(null);
+  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>(() => resolveTheme('auto'));
 
   useEffect(() => {
     if (!config) return;
@@ -39,7 +37,7 @@ function CountdownWidget() {
   useEffect(() => {
     if (config?.theme === 'auto') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const handleChange = () => setActualTheme(resolveTheme('auto'));
+      const handleChange = () => setSystemTheme(resolveTheme('auto'));
       mediaQuery.addEventListener('change', handleChange);
       return () => mediaQuery.removeEventListener('change', handleChange);
     }
@@ -47,12 +45,13 @@ function CountdownWidget() {
 
   if (!config || !time) return null;
 
+  const actualTheme = config.theme === 'auto' ? systemTheme : resolveTheme(config.theme);
   const isDark = actualTheme === 'dark';
   const bgColor = isDark ? '#191919' : '#FFFFFF';
   const textColor = isDark ? '#FFFFFF' : '#191919';
   const secondaryColor = '#666666';
 
-  const t = (key: string) => getTranslation(config.lang, key as any);
+  const t = (key: TranslationKey) => getTranslation(config.lang, key);
 
   const renderCountdown = () => {
     if (time.isExpired) {

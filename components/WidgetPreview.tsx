@@ -1,6 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
 import { EyeIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from '@/lib/i18n/hooks';
 import type { CountdownConfig } from '@/types';

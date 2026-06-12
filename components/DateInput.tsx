@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from '@/lib/i18n/hooks';
