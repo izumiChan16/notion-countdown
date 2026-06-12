@@ -10,26 +10,34 @@ interface DateInputProps {
 }
 
 export default function DateInput({ value, onChange }: DateInputProps) {
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement>(null);
   const datepickerRef = useRef<any>(null);
 
   useEffect(() => {
     if (!inputRef.current) return;
 
+    // Dynamic import with error handling
     import('flowbite-datepicker').then(({ Datepicker }) => {
+      console.log('Flowbite Datepicker loaded', Datepicker);
+
+      if (datepickerRef.current) {
+        datepickerRef.current.destroy();
+      }
+
       datepickerRef.current = new Datepicker(inputRef.current!, {
         autohide: true,
         format: 'yyyy-mm-dd',
         todayBtn: true,
         clearBtn: true,
-        language: language === 'zh' ? 'zh-CN' : 'en',
       });
 
       inputRef.current!.addEventListener('changeDate', (e: any) => {
-        const date = e.target.value;
-        onChange(date);
+        console.log('Date changed:', e.target.value);
+        onChange(e.target.value);
       });
+    }).catch(err => {
+      console.error('Failed to load Flowbite Datepicker:', err);
     });
 
     return () => {
@@ -37,7 +45,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
         datepickerRef.current.destroy();
       }
     };
-  }, [language, onChange]);
+  }, [onChange]);
 
   return (
     <div>
@@ -50,9 +58,9 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           ref={inputRef}
           type="text"
           value={value}
-          readOnly
-          placeholder="Select date"
-          className="w-full px-4 py-3 text-gray-900 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-lg cursor-pointer"
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="YYYY-MM-DD"
+          className="w-full px-4 py-3 text-gray-900 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-lg"
         />
       </div>
     </div>
