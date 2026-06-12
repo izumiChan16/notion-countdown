@@ -5,6 +5,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { parseWidgetUrl } from '@/lib/url-builder';
 import { calculateTimeRemaining } from '@/lib/countdown';
 import { resolveTheme } from '@/lib/theme';
+import { getTranslation } from '@/lib/i18n/translations';
 import type { CountdownConfig, TimeRemaining } from '@/types';
 
 function CountdownWidget() {
@@ -49,14 +50,18 @@ function CountdownWidget() {
   const isDark = actualTheme === 'dark';
   const bgColor = isDark ? '#191919' : '#FFFFFF';
   const textColor = isDark ? '#FFFFFF' : '#191919';
-  const secondaryColor = isDark ? '#666666' : '#666666';
+  const secondaryColor = '#666666';
+
+  const t = (key: string) => getTranslation(config.lang, key as any);
 
   const renderCountdown = () => {
     if (time.isExpired) {
       return (
         <div className="text-center">
           <div className="text-4xl sm:text-6xl font-bold" style={{ color: textColor }}>0</div>
-          <div className="text-base sm:text-xl mt-2" style={{ color: secondaryColor }}>已结束</div>
+          <div className="text-base sm:text-xl mt-2" style={{ color: secondaryColor }}>
+            {config.endMessage || t('expired')}
+          </div>
         </div>
       );
     }
@@ -65,16 +70,16 @@ function CountdownWidget() {
       return (
         <div className="text-center">
           <div className="text-5xl sm:text-7xl font-bold" style={{ color: textColor }}>{time.days}</div>
-          <div className="text-lg sm:text-2xl mt-2" style={{ color: secondaryColor }}>天</div>
+          <div className="text-lg sm:text-2xl mt-2" style={{ color: secondaryColor }}>{t('daysUnit')}</div>
         </div>
       );
     }
 
     const items = [
-      { value: time.days, label: '天', show: time.days > 0 || config.unit === 'hours' },
-      { value: time.hours, label: '时', show: true },
-      { value: time.minutes, label: '分', show: config.unit !== 'hours' },
-      { value: time.seconds, label: '秒', show: config.unit === 'seconds' },
+      { value: time.days, label: t('daysUnit'), show: time.days > 0 || config.unit === 'hours' },
+      { value: time.hours, label: t('hoursUnit'), show: true },
+      { value: time.minutes, label: t('minutesUnit'), show: config.unit !== 'hours' },
+      { value: time.seconds, label: t('secondsUnit'), show: config.unit === 'seconds' },
     ].filter(item => item.show);
 
     return (
@@ -132,7 +137,7 @@ function CountdownWidget() {
 
 export default function WidgetPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">加载中...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
       <CountdownWidget />
     </Suspense>
   );
