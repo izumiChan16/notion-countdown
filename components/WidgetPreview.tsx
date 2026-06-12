@@ -28,12 +28,12 @@ export default function WidgetPreview({ config }: WidgetPreviewProps) {
 
   if (!config || !time) {
     return (
-      <div className="mt-8 pt-8 border-t-2 border-gray-200">
-        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <EyeIcon className="w-6 h-6" />
+      <div className="rounded-md border border-[#dedbd5] bg-white">
+        <div className="flex items-center gap-2 border-b border-[#ece9e4] px-4 py-3 text-sm font-medium text-[#37352f]">
+          <EyeIcon className="h-4 w-4 text-[#787774]" />
           <span>{t('preview')}</span>
-        </h3>
-        <div className="p-12 text-center text-gray-400 border-2 border-dashed border-gray-300 rounded-2xl">
+        </div>
+        <div className="flex min-h-[260px] items-center justify-center p-8 text-center text-sm text-[#9b9a97]">
           {t('previewPlaceholder')}
         </div>
       </div>
@@ -103,18 +103,18 @@ export default function WidgetPreview({ config }: WidgetPreviewProps) {
   };
 
   return (
-    <div className="mt-8 pt-8 border-t-2 border-gray-200">
-      <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-        <EyeIcon className="w-6 h-6" />
+    <div className="rounded-md border border-[#dedbd5] bg-white">
+      <div className="flex items-center gap-2 border-b border-[#ece9e4] px-4 py-3 text-sm font-medium text-[#37352f]">
+        <EyeIcon className="h-4 w-4 text-[#787774]" />
         <span>{t('preview')}</span>
-      </h3>
+      </div>
       <div
-        className="w-full min-h-[300px] flex items-center justify-center p-2 sm:p-4 overflow-hidden rounded-2xl border-2 border-gray-300"
+        className="flex min-h-[260px] w-full items-center justify-center overflow-hidden rounded-b-md bg-[#fbfbfa] p-3 sm:p-4"
         style={{ backgroundColor: bgColor }}
       >
         <div className={getStyleClasses()}>
           {config.title && (
-            <h2 className="text-base sm:text-2xl font-semibold mb-3 sm:mb-6 text-center" style={{ color: textColor }}>
+            <h2 className="mb-3 text-center text-base font-semibold sm:mb-6 sm:text-2xl" style={{ color: textColor }}>
               {config.title}
             </h2>
           )}
