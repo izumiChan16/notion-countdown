@@ -1,4 +1,4 @@
-import type { CountdownConfig, CountdownUnit, Theme, Style } from '@/types';
+import type { CountdownConfig, CountdownUnit, Theme, Style, Locale } from '@/types';
 
 export function buildWidgetUrl(config: CountdownConfig): string {
   const params = new URLSearchParams();
@@ -7,6 +7,8 @@ export function buildWidgetUrl(config: CountdownConfig): string {
   params.set('unit', config.unit);
   params.set('theme', config.theme);
   params.set('style', config.style);
+  params.set('lang', config.lang);
+  if (config.endMessage) params.set('msg', config.endMessage);
 
   return `/widget?${params.toString()}`;
 }
@@ -21,5 +23,7 @@ export function parseWidgetUrl(searchParams: URLSearchParams): CountdownConfig {
     unit: (searchParams.get('unit') as CountdownUnit) || 'days',
     theme: (searchParams.get('theme') as Theme) || 'auto',
     style: (searchParams.get('style') as Style) || 'minimal',
+    lang: (searchParams.get('lang') as Locale) || 'zh',
+    endMessage: searchParams.get('msg') || undefined,
   };
 }
