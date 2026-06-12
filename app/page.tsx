@@ -2,7 +2,6 @@
 
 import { useState, Suspense } from 'react';
 import {
-  CalendarIcon,
   PencilIcon,
   ClockIcon,
   SwatchIcon,
@@ -14,6 +13,7 @@ import {
 import { buildWidgetUrl } from '@/lib/url-builder';
 import { useTranslation } from '@/lib/i18n/hooks';
 import type { CountdownUnit, Theme, Style } from '@/types';
+import DateInput from '@/components/DateInput';
 import TimeInput from '@/components/TimeInput';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import QRCodeDisplay from '@/components/QRCodeDisplay';
@@ -85,18 +85,7 @@ function ConfigPage() {
           {/* Date and Time */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-100">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                  <CalendarIcon className="w-5 h-5" />
-                  <span>{t('endDate')}</span>
-                </label>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full px-4 py-3 text-gray-900 bg-white border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all text-lg"
-                />
-              </div>
+              <DateInput value={date} onChange={setDate} />
               <TimeInput value={time} onChange={setTime} />
             </div>
             {isValid && (
