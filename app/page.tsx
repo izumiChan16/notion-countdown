@@ -23,6 +23,8 @@ export default function Home() {
         unit,
         theme,
         style,
+        lang: 'zh',
+        endMessage: undefined,
       });
       setGeneratedUrl(`${window.location.origin}${url}`);
     } catch (error) {
